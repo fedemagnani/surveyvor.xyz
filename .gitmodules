@@ -1,0 +1,6 @@
+[submodule "gnosis/lib/forge-std"]
+	path = gnosis/lib/forge-std
+	url = https://github.com/foundry-rs/forge-std
+[submodule "gnosis/lib/openzeppelin-contracts"]
+	path = gnosis/lib/openzeppelin-contracts
+	url = https://github.com/openzeppelin/openzeppelin-contracts
