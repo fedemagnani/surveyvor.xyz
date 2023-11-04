@@ -8,7 +8,10 @@ import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 contract SurveyvorTest is Test {
     Surveyvor public surveyvor;
 
-    address WETH = 0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2;
+    // address WETH = 0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2;
+    address GNO = 0x19C653Da7c37c66208fbfbE8908A5051B57b4C70;
+    address WETH = 0x19C653Da7c37c66208fbfbE8908A5051B57b4C70;
+    address USDC = 0x57f7E6ceAc40Aa078F4461ca7946d310A8642A3C;
 
     address deployer = address(0x01);
     address surveyprod = address(0x02);
@@ -65,8 +68,8 @@ contract SurveyvorTest is Test {
     // TESTS
 
     // TEST 1 params: Create a survey
-    uint256 campaign_budget = 1 ether;
-    uint256 respondent_reward = 0.5 ether;
+    uint256 campaign_budget = 10 ;
+    uint256 respondent_reward = 5 ;
     string survey_link = "https://www.survey.com";
     address currency_reward = WETH;
 
@@ -82,7 +85,7 @@ contract SurveyvorTest is Test {
 
     // TEST 2 params: Edit a survey reward
     uint256 survey_id = 0;
-    uint256 new_reward = 0.6 ether;
+    uint256 new_reward = 6 ;
 
     function test_edit_survey_reward() public {
         _create_survey(respondent_reward, currency_reward, campaign_budget, survey_link);
@@ -93,7 +96,7 @@ contract SurveyvorTest is Test {
 
 
     // TEST 3 params: Edit a survey reward and increase budget
-    uint256 airdrop_budget = 5 ether;
+    uint256 airdrop_budget = 5 ;
 
     function test_edit_survey_reward_and_increase_budget() public {
         _create_survey(respondent_reward, currency_reward, campaign_budget, survey_link);
@@ -146,9 +149,4 @@ contract SurveyvorTest is Test {
         // We check that the balance of the respondent has been increased by the reward
         assertEq( _post_balance_respondent- _balance_respondent, _reward);
     }
-
-
-
-
-
 }

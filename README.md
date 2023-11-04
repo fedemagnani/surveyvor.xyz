@@ -1,5 +1,5 @@
 # TODO
-- Integrate Web3Wallet (frontend) (walletconnect)
+- {OK} Integrate Web3Wallet (frontend) (walletconnect) 
 - Web3.js integration with gnosis sc (both frontend/backend)
     - [Frontend]: send survey on IExec and wait for confirmations on-chain ->  [Frontend]: send request to backend -> [Backend] invokes `add_respondent()` (gnosis sc) and wait for confirmation on-chain -> [Backend] answers to frontend -> [Frontend] says "thank you for your submission, you've been rewarded with"
     - When surveyprod invokes `close_survey()`, must have a list of exportable data
