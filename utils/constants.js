@@ -29,4 +29,16 @@ const CHRONICLE_SMART_CONTRACTS = {
     YFI_USD	:"0x0893EcE705639112C1871DcE88D87D81540D0199",
 };
 
-module.exports = CHRONICLE_SMART_CONTRACTS
+const GNOSIS_ADDRESS_MAPPING = {
+    "0x19C653Da7c37c66208fbfbE8908A5051B57b4C70":{
+        tracker:"GNO",
+        image:"https://s2.coinmarketcap.com/static/img/coins/64x64/1659.png",
+        decimals:18
+    }
+}
+
+const ADDRESS_MAPPINGS = {
+    10200: GNOSIS_ADDRESS_MAPPING
+}
+
+module.exports = {CHRONICLE_SMART_CONTRACTS, ADDRESS_MAPPINGS}
