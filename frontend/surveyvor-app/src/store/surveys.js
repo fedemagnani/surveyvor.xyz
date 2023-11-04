@@ -25,8 +25,11 @@ export const actions = {
                 commit('setSurveys', response.data);
             });
     },
-    selectSurvey({ commit }, survey) {
-        commit('setSelectedSurvey', survey);
+    fetchSurvey({ commit }, surveyId) {
+        axios.get(process.env.VUE_APP_API_URL + '/api/surveys/' + surveyId)
+            .then((response) => {
+                commit('setSelectedSurvey', response.data);
+            });
     },
 };
 

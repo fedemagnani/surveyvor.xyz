@@ -1,11 +1,18 @@
 <template>
-  <div
-    class="hidden bg-black bg-gradient-to-t from-red-900 to-red-500 bg-gradient-to-t from-violet-600 to-blue-500 bg-gradient-to-t from-amber-500 to-pink-500 bg-gradient-to-r from-fuchsia-500 to-cyan-500"></div>
-  <router-view />
+  <div>
+    <router-view />
+    <div class="absolute right-0 bottom-0">
+      <UserStatus />
+    </div>
+  </div>
 </template>
 
 <script>
+  import UserStatus from '@/components/UserStatus.vue';
   export default {
     name: 'App',
+    components: {
+      UserStatus,
+    },
   };
 </script>
