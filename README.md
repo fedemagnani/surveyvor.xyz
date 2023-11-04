@@ -22,11 +22,12 @@
 
 - Near (TBD: survey components/website components) ! 
 
-
 - Chronicle !!
     - fetch token prices
 
 - Neon, CoreDAO (TBD: multichain deployment)
+
+- 
 
 # Main Smart Contracts
 - Before funding the survey, surveyprod must grant allowance to the gnosis contract at least for the _survey_gas amount

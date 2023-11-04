@@ -37,7 +37,8 @@ contract Surveyvor is Ownable{
     );
 
 
-    constructor() {}
+    constructor(address initialOwner) Ownable(initialOwner){
+    }
 
     function get_survey(uint256 _id) public view returns (Survey memory) {
         return surveys[_id];
