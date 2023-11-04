@@ -179,6 +179,11 @@
 </template>
 
 <script setup>
+  // Alert
+  import { ref } from 'vue';
+  import { Dialog, DialogPanel, DialogTitle, TransitionChild, TransitionRoot } from '@headlessui/vue';
+  import { CheckIcon, NoSymbolIcon } from '@heroicons/vue/24/outline';
+  
   import { useStore } from 'vuex';
   import { useRoute, useRouter } from 'vue-router';
   import { computed, onMounted } from 'vue';
@@ -188,10 +193,6 @@
   const fetchSurvey = () => store.dispatch('fetchSurvey', route.params.id); // fetch survey function
   onMounted(fetchSurvey); // fetch survey on mount
 
-  // Alert
-  import { ref } from 'vue';
-  import { Dialog, DialogPanel, DialogTitle, TransitionChild, TransitionRoot } from '@headlessui/vue';
-  import { CheckIcon, NoSymbolIcon } from '@heroicons/vue/24/outline';
   const vueAlert = ref({
     open: false,
     callback: () => {},
