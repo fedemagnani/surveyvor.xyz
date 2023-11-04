@@ -33,31 +33,26 @@ const routes = [
                         alias: '',
                         component: () => import('./views/surveys/sub/details/sub/PreviewView.vue'),
                     },
-                    /*                    {
-                                          name: 'SurveyTopupView',
-                                          path: 'topup',
-                                          component: () => import('./views/surveys/sub/details/sub/TopupView.vue'),
-                                      },
+                    // Consumer
+                    {
+                        name: 'answerWizardView',
+                        path: 'answer/wizard',
+                        component: () => import('./views/surveys/sub/details/sub/aswerWizard/ContainerView.vue'),
+                        children: [
+                            {
+                                name: 'answerWizardPresurveyView',
+                                path: 'survey',
+                                alias: '',
+                                component: () => import('./views/surveys/sub/details/sub/aswerWizard/sub/PresurveyView.vue'),
+                            },
+                            {
+                                path: 'result',
+                                component: () => import('./views/surveys/sub/details/sub/aswerWizard/sub/ResultView.vue'),
+                            },
+                        ]
+                    },
+                    /*                    
                   
-                                      // Consumer
-                                      {
-                                          path: 'answer/wizard',
-                                          component: () => import('./views/surveys/sub/details/sub/aswerWizard/ContainerView.vue'),
-                                          children: [
-                                              {
-                                                  path: 'presurvey',
-                                                  component: () => import('./views/surveys/sub/details/sub/aswerWizard/sub/PresurveyView.vue'),
-                                              },
-                                              {
-                                                  path: 'survey',
-                                                  component: () => import('./views/surveys/sub/details/sub/aswerWizard/sub/SurveyView.vue'),
-                                              },
-                                              {
-                                                  path: 'result',
-                                                  component: () => import('./views/surveys/sub/details/sub/aswerWizard/sub/ResultView.vue'),
-                                              },
-                                          ]
-                                      },
                   
                                       // Producer
                                       {
@@ -96,7 +91,12 @@ const routes = [
                                                   component: () => import('./views/surveys/sub/details/sub/createWizard/sub/OpenCampaignView.vue'),
                                               },
                                           ]
-                                      }
+                                      },
+                                      {
+                                          name: 'SurveyTopupView',
+                                          path: 'topup',
+                                          component: () => import('./views/surveys/sub/details/sub/TopupView.vue'),
+                                      },
                   */
                 ],
             },

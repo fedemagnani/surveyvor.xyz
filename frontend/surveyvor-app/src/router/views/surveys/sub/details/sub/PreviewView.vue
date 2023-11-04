@@ -42,16 +42,17 @@
           <button
             v-if="ownership"
             type="submit"
-            class="flex max-w-xs flex-1 items-center justify-center rounded-md border border-transparent bg-red-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-50 sm:w-full">
+            class="flex max-w-xs flex-1 items-center justify-center rounded-md border border-transparent bg-red-600 px-8 py-3 text-base font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 focus:ring-offset-gray-50 sm:w-full">
             Close Survey
           </button>
-          <button
+          <router-link
             v-else
             type="submit"
+            :to="{ name: 'answerWizardPresurveyView', params: { id: selectedSurvey._id } }"
             class="flex max-w-xs flex-1 items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-50 sm:w-full">
             Answer Survey for
             <text class="font-bold ml-1">{{ selectedSurvey.reward }} {{ selectedSurvey.currency }}</text>
-          </button>
+          </router-link>
         </div>
 
         <!-- Product info -->
@@ -109,10 +110,10 @@
             <h2 id="details-heading" class="sr-only">Additional details</h2>
 
             <div class="divide-y divide-gray-200 border-t">
-              <Disclosure as="div" v-for="detail in product.details" :key="detail.name" v-slot="{ open }">
+              <Disclosure as="div" v-slot="{ open }">
                 <h3>
                   <DisclosureButton class="group relative flex w-full items-center justify-between py-6 text-left">
-                    <span :class="[open ? 'text-indigo-600' : 'text-gray-900', 'text-sm font-medium']">{{ detail.name }}</span>
+                    <span :class="[open ? 'text-indigo-600' : 'text-gray-900', 'text-sm font-medium']">Pre-survey questions</span>
                     <span class="ml-6 flex items-center">
                       <PlusIcon v-if="!open" class="block h-6 w-6 text-gray-400 group-hover:text-gray-500" aria-hidden="true" />
                       <MinusIcon v-else class="block h-6 w-6 text-indigo-400 group-hover:text-indigo-500" aria-hidden="true" />
@@ -121,7 +122,7 @@
                 </h3>
                 <DisclosurePanel as="div" class="prose prose-sm pb-6">
                   <ul role="list">
-                    <li v-for="item in detail.items" :key="item">{{ item }}</li>
+                    <li v-for="item in selectedSurvey.preSurveyQuestions" :key="item">{{ item.question }}</li>
                   </ul>
                 </DisclosurePanel>
               </Disclosure>
@@ -145,24 +146,6 @@
     { name: 'Tier 4', bgColor: 'bg-indigo-500', selectedColor: 'ring-gray-300', tier: 4 },
     { name: 'Tier 5', bgColor: 'bg-indigo-600', selectedColor: 'ring-gray-300', tier: 5 },
   ];
-
-  const product = {
-    details: [
-      {
-        name: 'Pre Survey Questions',
-        items: [
-          'Multiple strap configurations',
-          'Spacious interior with top zip',
-          'Leather handle and tabs',
-          'Interior dividers',
-          'Stainless strap loops',
-          'Double stitched construction',
-          'Water-resistant',
-        ],
-      },
-      // More sections...
-    ],
-  };
 
   const selectedColor = ref(tiers[0]);
 

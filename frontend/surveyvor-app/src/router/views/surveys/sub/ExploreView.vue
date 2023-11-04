@@ -76,28 +76,30 @@
                 <img :src="survey.image" :alt="survey.title" class="relative z-20 h-full w-full object-cover object-center" />
               </div>
 
-              <div class="pb-4 pt-10 text-center" :class="{ 'opacity-30': survey.closed }">
+              <div class="pb-2 py-5 text-center" :class="{ 'opacity-30': survey.closed }">
                 <h3 class="text-sm font-medium text-gray-900">
                   <router-link :to="{ path: `/surveys/d/${survey._id}`, params: { id: survey._id } }">
                     <span aria-hidden="true" class="absolute inset-0" />
                     {{ survey.title }}
                   </router-link>
                 </h3>
-                <div class="mt-3 flex flex-col items-center">
-                  <p class="sr-only">{{ survey.rating }} out of 5 stars</p>
-                  <div class="flex items-center">
-                    <StarIcon
-                      v-for="rating in [0, 1, 2, 3, 4]"
-                      :key="rating"
-                      :class="[survey.rating > rating ? 'text-indigo-500' : 'text-gray-100', 'h-5 w-5 flex-shrink-0']"
-                      aria-hidden="true" />
-                  </div>
-                  <p class="mt-1 text-sm text-gray-500">
-                    <b>{{ survey.reviewCount }}</b>
-                    reviews
+                <div class="flex items-center justify-center">
+                  <StarIcon
+                    v-for="rating in [0, 1, 2, 3, 4]"
+                    :key="rating"
+                    :class="[survey.rating > rating ? 'text-indigo-500' : 'text-gray-200', 'h-4 w-4 flex-shrink-0']"
+                    aria-hidden="true" />
+                </div>
+                <p class="mt-3 text-3xl text-indigo-500 font-semibold">
+                  {{ survey.reward }}
+                  <text class="text-gray-400 text-lg">{{ survey.currency }}</text>
+                </p>
+                <div class="flex flex-col items-center">
+                  <p class="text-sm tracking-tight text-gray-500">
+                    <text class="text-gray-900 font-semibold">{{ survey.respondentsLeft }} left</text>
+                    / {{ survey.maximumRespondentsNumber }}
                   </p>
                 </div>
-                <p class="mt-4 text-base font-medium text-gray-900">{{ survey.price }}</p>
               </div>
             </div>
           </div>
