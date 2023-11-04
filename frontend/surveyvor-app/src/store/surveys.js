@@ -1,12 +1,17 @@
 // store/survey.js
+
+import axios from 'axios';
+
 export const state = () => ({
     surveys: [],
+    lastSurveysUpdate: new Date(),
     selectedSurvey: null,
 });
 
 export const mutations = {
     setSurveys(state, surveys) {
         state.surveys = surveys;
+        state.lastSurveysUpdate = new Date();
     },
     setSelectedSurvey(state, survey) {
         state.selectedSurvey = survey;
@@ -15,16 +20,10 @@ export const mutations = {
 
 export const actions = {
     fetchSurveys({ commit }) {
-        commit('setSurveys',
-            [
-                {
-                    id: 1,
-                    name: 'Survey 1',
-                    desciprtion: 'This is the first survey',
-                    icon: 'https://picsum.photos/200',
-                },
-            ]
-        );
+        axios.get(process.env.VUE_APP_API_URL + '/api/surveys')
+            .then((response) => {
+                commit('setSurveys', response.data);
+            });
     },
     selectSurvey({ commit }, survey) {
         commit('setSelectedSurvey', survey);
@@ -34,4 +33,5 @@ export const actions = {
 export const getters = {
     getAllSurveys: (state) => state.surveys,
     getSelectedSurvey: (state) => state.selectedSurvey,
+    getLastSurveysUpdate: (state) => state.lastSurveysUpdate,
 };

@@ -41,7 +41,7 @@
               <h1 class="text-2xl font-bold text-gray-900">{{ currentSection }}</h1>
               <p class="text-sm font-medium text-gray-500">
                 Last update on
-                <time datetime="2023-11-03" class="text-gray-900">November 3, 2023</time>
+                <time class="text-gray-900">{{ lastSurveyUpdate }}</time>
               </p>
             </div>
           </div>
@@ -49,6 +49,7 @@
             class="mt-6 flex flex-col-reverse justify-stretch space-y-4 space-y-reverse sm:flex-row-reverse sm:justify-end sm:space-x-3 sm:space-y-0 sm:space-x-reverse md:mt-0 md:flex-row md:space-x-3">
             <button
               type="button"
+              @click="fetchSurveys"
               class="inline-flex items-center justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
               Refresh
             </button>
@@ -88,6 +89,16 @@
     { name: 'My surveys', to: { path: '/surveys/mySurveys', params: { filter: 'mySurveys' } }, current: filter.value == 'mySurveys' },
     { name: 'History', to: { path: '/surveys/history', params: { filter: 'history' } }, current: filter.value == 'history' },
   ]);
+
+  // Refresh surveys function
+  import { useStore } from 'vuex';
+  const store = useStore();
+  const fetchSurveys = () => store.dispatch('fetchSurveys');
+
+  const lastSurveyUpdate = computed(() => {
+    const t = store.getters.getLastSurveysUpdate.toLocaleString();
+    return t;
+  });
 
   const currentSection = computed(() => {
     return navigation.value.find((item) => item.current)?.name;
