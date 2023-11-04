@@ -8,13 +8,6 @@ const routes = [
         component: () => import('./views/HomeView.vue'),
     },
     {
-        name: 'LoginView',
-        path: '/login',
-        component: () => import('./views/LoginView.vue'),
-    },
-
-
-    {
         name: 'SurveysView',
         path: '/surveys',
         component: () => import('./views/surveys/ContainerView.vue'),
@@ -27,7 +20,6 @@ const routes = [
                 alias: '',
                 component: () => import('./views/surveys/sub/ExploreView.vue'),
             },
-
             {
                 name: 'SurveyDetailsContainerView',
                 path: 'd/:id',
