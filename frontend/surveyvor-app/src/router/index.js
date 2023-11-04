@@ -51,55 +51,34 @@ const routes = [
                             },
                         ]
                     },
-                    /*                    
-                  
-                  
-                                      // Producer
-                                      {
-                                          name: 'ProducerSurveyWithdraw',
-                                          path: 'withdraw',
-                                          component: () => import('./views/surveys/sub/details/sub/WithdrawView.vue'),
-                                      },
-                                      {
-                                          name: 'ProducerSurveyData',
-                                          path: 'data',
-                                          component: () => import('./views/surveys/sub/details/sub/DataView.vue'),
-                                      },
-                                      {
-                                          name: 'ProducerCreateSurveyWizard',
-                                          path: 'create/wizard',
-                                          component: () => import('./views/surveys/sub/details/sub/createWizard/ContainerView.vue'),
-                                          children: [
-                                              {
-                                                  name: 'ProducerCreateSurveyWizardGeneral',
-                                                  path: 'general',
-                                                  component: () => import('./views/surveys/sub/details/sub/createWizard/sub/GeneralView.vue'),
-                                              },
-                                              {
-                                                  name: 'ProducerCreateSurveyWizardLicenseType',
-                                                  path: 'licensetype',
-                                                  component: () => import('./views/surveys/sub/details/sub/createWizard/sub/LicenseTypeView.vue'),
-                                              },
-                                              {
-                                                  name: 'ProducerCreateSurveyWizardBudget',
-                                                  path: 'budget',
-                                                  component: () => import('./views/surveys/sub/details/sub/createWizard/sub/BudgetView.vue'),
-                                              },
-                                              {
-                                                  name: 'ProducerCreateSurveyWizardOpenCampaign',
-                                                  path: 'opencampaign',
-                                                  component: () => import('./views/surveys/sub/details/sub/createWizard/sub/OpenCampaignView.vue'),
-                                              },
-                                          ]
-                                      },
-                                      {
-                                          name: 'SurveyTopupView',
-                                          path: 'topup',
-                                          component: () => import('./views/surveys/sub/details/sub/TopupView.vue'),
-                                      },
-                  */
-                ],
+                ]
             },
+            {
+                name: 'ProducerCreateSurveyWizard',
+                path: 'create/wizard',
+                component: () => import('./views/surveys/sub/details/sub/createWizard/ContainerView.vue'),
+            },
+            /*                    
+          
+          
+                              // Producer
+                              {
+                                  name: 'ProducerSurveyWithdraw',
+                                  path: 'withdraw',
+                                  component: () => import('./views/surveys/sub/details/sub/WithdrawView.vue'),
+                              },
+                              {
+                                  name: 'ProducerSurveyData',
+                                  path: 'data',
+                                  component: () => import('./views/surveys/sub/details/sub/DataView.vue'),
+                              },
+                              
+                              {
+                                  name: 'SurveyTopupView',
+                                  path: 'topup',
+                                  component: () => import('./views/surveys/sub/details/sub/TopupView.vue'),
+                              },
+          */
 
         ]
     },
