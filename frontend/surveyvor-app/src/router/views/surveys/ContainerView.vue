@@ -84,10 +84,10 @@
   });
 
   const navigation = computed(() => [
-    { name: 'Explore', to: { path: '/surveys/explore', params: { filter: 'explore' } }, current: filter.value == 'explore' },
-    { name: 'Answer', to: { path: '/surveys/answer', params: { filter: 'answer' } }, current: filter.value == 'answer' },
-    { name: 'My surveys', to: { path: '/surveys/mySurveys', params: { filter: 'mySurveys' } }, current: filter.value == 'mySurveys' },
-    { name: 'History', to: { path: '/surveys/history', params: { filter: 'history' } }, current: filter.value == 'history' },
+    { name: 'Explore', to: { path: '/surveys/l/explore', params: { filter: 'explore' } }, current: filter.value == 'explore' },
+    { name: 'Answer', to: { path: '/surveys/l/answer', params: { filter: 'answer' } }, current: filter.value == 'answer' },
+    { name: 'My surveys', to: { path: '/surveys/l/mySurveys', params: { filter: 'mySurveys' } }, current: filter.value == 'mySurveys' },
+    { name: 'History', to: { path: '/surveys/l/history', params: { filter: 'history' } }, current: filter.value == 'history' },
   ]);
 
   // Refresh surveys function

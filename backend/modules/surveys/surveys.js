@@ -3,6 +3,7 @@
 const express = require('express');
 const router = express.Router();
 const { connectToMongoDB } = require('../../lib/mongodb/db');
+const { ObjectId } = require('mongodb');
 
 // Define middleware to connect to MongoDB and retrieve the collection
 router.use(async (req, res, next) => {
@@ -20,11 +21,12 @@ router.get('/', async (req, res) => {
 
 // Get survey by id
 router.get('/:id', async (req, res) => {
-    const survey = await req.collection.findOne({ _id: req.params.id });
-    const { surveyId } = survey || {};
-    if (!surveyId) return res.status(404).send('Survey not found');
+    const id = new ObjectId(req.params.id);
+    const survey = await req.collection.findOne({ _id: id });
+    /* const { surveyId } = survey || {};
+    if (!surveyId) return res.status(404).send('Survey not found'); */
     // AGGIUNGI GET DA GNOSIS
-    res.json({ ...survey });
+    res.json(survey);
 });
 
 // Close survey

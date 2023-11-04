@@ -1,9 +1,8 @@
 <template>
   <div>
     <template v-if="filter == 'history'">
-      <div>
-        <h3 class="text-base font-semibold leading-6 text-gray-900">Last 30 days</h3>
-        <dl class="mt-5 grid grid-cols-1 divide-y divide-gray-200 overflow-hidden rounded-lg bg-white shadow md:grid-cols-3 md:divide-x md:divide-y-0">
+      <div class="my-6">
+        <dl class="mt-5 grid grid-cols-1 divide-y divide-gray-200 overflow-hidden rounded-lg bg-white md:grid-cols-3 md:divide-x md:divide-y-0">
           <div v-for="item in stats" :key="item.name" class="px-4 py-5 sm:p-6">
             <dt class="text-base font-normal text-gray-900">{{ item.name }}</dt>
             <dd class="mt-1 flex items-baseline justify-between md:block lg:flex">
@@ -28,9 +27,8 @@
       </div>
     </template>
     <template v-if="filter == 'mySurveys'">
-      <div>
-        <h3 class="text-base font-semibold leading-6 text-gray-900">Last 30 days</h3>
-        <dl class="mt-5 grid grid-cols-1 divide-y divide-gray-200 overflow-hidden rounded-lg bg-white shadow md:grid-cols-3 md:divide-x md:divide-y-0">
+      <div class="my-6">
+        <dl class="mt-5 grid grid-cols-1 divide-y divide-gray-200 overflow-hidden rounded-lg bg-white md:grid-cols-3 md:divide-x md:divide-y-0">
           <div v-for="item in myStats" :key="item.name" class="px-4 py-5 sm:p-6">
             <dt class="text-base font-normal text-gray-900">{{ item.name }}</dt>
             <dd class="mt-1 flex items-baseline justify-between md:block lg:flex">
@@ -56,25 +54,34 @@
     </template>
 
     <div>
-      <div class="bg-white pt-24">
+      <div class="bg-white rounded-2xl">
         <div class="mx-auto max-w-7xl overflow-hidden sm:px-6 lg:px-8">
           <div class="-mx-px grid grid-cols-2 sm:mx-0 md:grid-cols-3 lg:grid-cols-4">
             <div
               v-for="survey in surveys"
               :key="survey.id"
-              class="group relative p-6 pt-12 sm:p-6 flex flex-col justify-center items-center hover:bg-gray-100 rounded-2xl transform transition duration-300 ease-in-out">
+              class="group relative p-6 pt-12 my-12 sm:p-6 flex flex-col justify-center items-center rounded-2xl transform transition duration-300 ease-in-out overflow-visible"
+              :class="{ 'hover:bg-gray-100 hover:scale-110': !survey.closed }">
               <div
-                class="relative h-48 w-48 bg-gray-300 p-16 rounded-3xl shadow-xl hover:scale-110 transform transition duration-300 ease-in-out"
-                :class="survey.background">
-                <img :src="survey.image" :alt="survey.title" class="h-full w-full object-cover object-center" />
+                class="relative h-48 w-48 bg-gray-300 p-16 rounded-3xl shadow-xl transform transition duration-300 ease-in-out"
+                :class="{ 'shadow-none': survey.closed, 'hover:scale-105 ': !survey.closed }"
+                :style="{ 'background-color': survey.closed ? '#eeeeee' : survey.background }">
+                <div
+                  v-if="survey.closed"
+                  class="absolute bottom-0 left-0 z-10 rounded-b-3xl h-min w-full bg-red-500 flex justify-center items-center text-white font-bold">
+                  Closed
+                </div>
+                <div v-else class="absolute top-0 left-0 z-10 rounded-3xl h-full w-full bg-gradient-to-t from-gray-900/60 to-transparent"></div>
+
+                <img :src="survey.image" :alt="survey.title" class="relative z-20 h-full w-full object-cover object-center" />
               </div>
 
-              <div class="pb-4 pt-10 text-center">
+              <div class="pb-4 pt-10 text-center" :class="{ 'opacity-30': survey.closed }">
                 <h3 class="text-sm font-medium text-gray-900">
-                  <a :href="'/survays/' + survey._id">
+                  <router-link :to="{ path: `/surveys/d/${survey._id}`, params: { id: survey._id } }">
                     <span aria-hidden="true" class="absolute inset-0" />
                     {{ survey.title }}
-                  </a>
+                  </router-link>
                 </h3>
                 <div class="mt-3 flex flex-col items-center">
                   <p class="sr-only">{{ survey.rating }} out of 5 stars</p>
