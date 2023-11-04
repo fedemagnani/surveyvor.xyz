@@ -2,6 +2,7 @@
 const defaultState = {
     address: null,
     connected: false,
+    chainId: null,
 };
 
 export const state = () => ({
@@ -28,6 +29,7 @@ export const actions = {
             commit('setConnectionState', {
                 address: state.modal.getAddress() || null,
                 connected: state.modal.getIsConnected() || false,
+                chainId: state.modal.getChainId() || null,
             });
     },
 };

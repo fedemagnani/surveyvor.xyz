@@ -22,11 +22,7 @@
           </div>
           <div class="hidden md:block">
             <div class="ml-4 flex items-center md:ml-6">
-              <button
-                type="button"
-                class="hidden ml-3 inline-flex items-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-indigo shadow-sm hover:bg-gray-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-100">
-                Create new Survey
-              </button>
+              <UserStatus />
             </div>
           </div>
         </div>
@@ -53,11 +49,12 @@
               class="inline-flex items-center justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
               Refresh
             </button>
-            <button
+            <router-link
+              :to="{ name: 'ProducerCreateSurveyWizard' }"
               type="button"
               class="inline-flex items-center justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
               Create new Survey
-            </button>
+            </router-link>
           </div>
         </div>
       </div>
@@ -103,4 +100,6 @@
   const currentSection = computed(() => {
     return navigation.value.find((item) => item.current)?.name;
   });
+
+  import UserStatus from '@/components/UserStatus.vue';
 </script>
