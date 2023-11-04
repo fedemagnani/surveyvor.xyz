@@ -54,6 +54,49 @@
         </dl>
       </div>
     </template>
+
+    <div>
+      <div class="bg-white pt-24">
+        <div class="mx-auto max-w-7xl overflow-hidden sm:px-6 lg:px-8">
+          <div class="-mx-px grid grid-cols-2 sm:mx-0 md:grid-cols-3 lg:grid-cols-4">
+            <div
+              v-for="survey in surveys"
+              :key="survey.id"
+              class="group relative p-6 pt-12 sm:p-6 flex flex-col justify-center items-center hover:bg-gray-100 rounded-2xl transform transition duration-300 ease-in-out">
+              <div
+                class="relative h-48 w-48 bg-gray-300 p-16 rounded-3xl shadow-xl hover:scale-110 transform transition duration-300 ease-in-out"
+                :class="survey.background">
+                <img :src="survey.image" :alt="survey.title" class="h-full w-full object-cover object-center" />
+              </div>
+
+              <div class="pb-4 pt-10 text-center">
+                <h3 class="text-sm font-medium text-gray-900">
+                  <a :href="'/survays/' + survey._id">
+                    <span aria-hidden="true" class="absolute inset-0" />
+                    {{ survey.title }}
+                  </a>
+                </h3>
+                <div class="mt-3 flex flex-col items-center">
+                  <p class="sr-only">{{ survey.rating }} out of 5 stars</p>
+                  <div class="flex items-center">
+                    <StarIcon
+                      v-for="rating in [0, 1, 2, 3, 4]"
+                      :key="rating"
+                      :class="[survey.rating > rating ? 'text-indigo-500' : 'text-gray-100', 'h-5 w-5 flex-shrink-0']"
+                      aria-hidden="true" />
+                  </div>
+                  <p class="mt-1 text-sm text-gray-500">
+                    <b>{{ survey.reviewCount }}</b>
+                    reviews
+                  </p>
+                </div>
+                <p class="mt-4 text-base font-medium text-gray-900">{{ survey.price }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -80,4 +123,21 @@
     const { filter: f = 'explore' } = route.params;
     return f;
   });
+
+  // SURVEYS
+
+  // Get surveys from store
+  import { useStore } from 'vuex';
+  const store = useStore();
+
+  // Refresh surveys function
+  const fetchSurveys = () => store.dispatch('fetchSurveys');
+  // Refresh surveys on mount
+  import { onMounted } from 'vue';
+  onMounted(fetchSurveys);
+
+  const surveys = computed(() => store.getters.getAllSurveys);
+
+  // Surveys Card
+  import { StarIcon } from '@heroicons/vue/20/solid';
 </script>
