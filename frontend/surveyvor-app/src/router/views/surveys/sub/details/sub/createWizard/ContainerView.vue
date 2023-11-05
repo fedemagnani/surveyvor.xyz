@@ -458,6 +458,17 @@
   // Alert management
   import { Dialog, DialogPanel, DialogTitle, TransitionChild, TransitionRoot } from '@headlessui/vue';
   import { CheckIcon, NoSymbolIcon } from '@heroicons/vue/24/outline';
+  import { Listbox, ListboxButton, ListboxLabel, ListboxOption, ListboxOptions } from '@headlessui/vue';
+  import { CheckIcon as CheckIcon20, ChevronUpDownIcon } from '@heroicons/vue/20/solid';
+  import { computed } from 'vue';
+  // import { prepareWriteContract, writeContract} from '@wagmi/core';
+  import { writeContract} from '@wagmi/core';
+
+  import { ethers } from 'ethers';
+
+  // We import also the json file 
+  import foundry_build_contract from '../../../../../../../../../../utils/other_abis/Surveyvor.json';
+  
   const vueAlert = ref({
     open: false,
     callback: () => {},
@@ -469,11 +480,7 @@
   const openAlert = ({ title, body, button }, ok, callback) => {
     vueAlert.value = { open: true, ok, callback, title, body, button };
   };
-
-  import { Listbox, ListboxButton, ListboxLabel, ListboxOption, ListboxOptions } from '@headlessui/vue';
-  import { CheckIcon as CheckIcon20, ChevronUpDownIcon } from '@heroicons/vue/20/solid';
-
-  const currencies = [
+const currencies = [
     { name: 'ETH', id: '0xc8A1F9461115EF3C1E84Da6515A88Ea49CA97660', avatar: 'https://s2.coinmarketcap.com/static/img/coins/64x64/1027.png' },
     { name: 'USDT', id: '0x0bd446021Ab95a2ABd638813f9bDE4fED3a5779a', avatar: 'https://s2.coinmarketcap.com/static/img/coins/64x64/825.png' },
     { name: 'GNO', id: '0x19C653Da7c37c66208fbfbE8908A5051B57b4C70', avatar: 'https://s2.coinmarketcap.com/static/img/coins/64x64/1659.png' },
@@ -503,7 +510,6 @@
     { name: 'YFI', id: '0x0893EcE705639112C1871DcE88D87D81540D0199', avatar: 'https://s2.coinmarketcap.com/static/img/coins/64x64/1027.png' }, */,
   ];
 
-  import { computed } from 'vue';
   const title = ref('Titolo del sondaggio');
   const description = ref('Descrizione del sondaggio');
   const budget = ref(3);
@@ -612,7 +618,7 @@
     currentSurvey.questions.push(toAdd);
   };
 
-  function submitSurvey() {
+  async function submitSurvey() {
     const survey = {
       title: title.value,
       description: description.value,
@@ -625,5 +631,17 @@
       survey: surveys.value[1].questions,
     };
     console.log(survey);
+    const { hash } = await writeContract({
+      address: "0x6BB72b7038Aaa132850b005F4008d724df98f4f9",
+      abi: foundry_build_contract.abi,
+      functionName: 'create_survey',
+      args: [
+        ethers.BigNumber.from(survey.reward * 1e18).toString(),
+        survey.currency.toString(),
+        ethers.BigNumber.from(survey.budget* 1e18).toString(),
+        "default"
+      ]
+    })
+    console.log(hash)
   }
 </script>
