@@ -186,6 +186,9 @@
   import { useStore } from 'vuex';
   import { useRoute, useRouter } from 'vue-router';
   import { computed, onMounted } from 'vue';
+  import { getAccount } from '@wagmi/core';
+  import { IExecDataProtector } from '@iexec/dataprotector';
+
   const store = useStore(); // get store
   const selectedSurvey = computed(() => store.getters.getSelectedSurvey); // get selected survey from store
   const route = useRoute(); // get route parameters
@@ -233,9 +236,50 @@
     console.log(surveyData);
 
     // TODO: INTEGRARE iExec
-
-    openAlert({ title: 'Yeah', body: 'You have completed the survey!', button: 'Back to the home' }, true, () =>
-      router.push({ name: 'SurveysExploreView', params: { filter: 'explore' } }),
-    );
+    openAlert({ title: 'Yeah', body: 'You have completed the survey!\nNow you are going to secure your answers on iExec', button: 'Cool' }, true, async () => {
+      // router.push({ name: 'SurveysExploreView', params: { filter: 'explore' } }),
+      let data = await protectDataFunc({ email: 'filippocarboni99@gmail.com' }, 'email');
+        console.log('resp:', data);
+        openAlert({ title: 'Data deployed on iExec!', body: 'Your answers are encrypted and secured via iExec', button: 'Understood' }, true, async () =>{
+          let res = await grantAccessFunc(data.address, "web3mail.apps.iexec.eth",selectedSurvey.value.ownerAddress,0,1)
+          console.log('res:', res);
+          ////
+        }
+          // router.push({ name: 'SurveysExploreView', params: { filter: 'explore' } }),
+        );
+    });
   };
+
+
+  // Data Protector iExec
+  const protectDataFunc = async (data, name) => {
+    const result = getAccount();
+    const provider = await result.connector?.getProvider();
+    const dataProtector = new IExecDataProtector(provider);
+    const protectedData = await dataProtector.protectData({ data, name });
+    return protectedData;
+  };
+
+  const grantAccessFunc = async (
+    protectedData,
+    authorizedApp,
+    authorizedUser,
+    pricePerAccess,
+    numberOfAccess,
+  ) => {
+    const result = getAccount();
+    const provider = await result.connector?.getProvider();
+    // Configure private data protector
+    const dataProtector = new IExecDataProtector(provider);
+    const hash = await dataProtector.grantAccess({
+      protectedData,
+      authorizedApp,
+      authorizedUser,
+      pricePerAccess,
+      numberOfAccess,
+    });
+    return hash;
+    
+  };
+  
 </script>
