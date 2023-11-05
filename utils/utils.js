@@ -1,7 +1,7 @@
 const ethers = require('ethers');
 const dotenv = require('dotenv');
 
-const gnosis_abi = require('../gnosis/out/Surveyvor.sol/Surveyvor.json');
+const gnosis_abi = require('./other_abis/Surveyvor.json');
 const ierc20_abi = require('../gnosis/out/IERC20.sol/IERC20.json');
 const self_kiss_abi = require('./other_abis/selfkiss.json');
 const chronicle_oracle_abi = require('./other_abis/chronicle_oracle.json');
