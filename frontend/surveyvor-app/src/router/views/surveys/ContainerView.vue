@@ -70,7 +70,7 @@
 <script setup>
   import { Disclosure } from '@headlessui/vue';
 
-  import { computed } from 'vue';
+  import { computed, watch } from 'vue';
 
   // Get current route to set the current navigation item
   import { useRoute } from 'vue-router';
@@ -91,6 +91,12 @@
   import { useStore } from 'vuex';
   const store = useStore();
   const fetchSurveys = () => store.dispatch('fetchSurveys');
+
+  const address = computed(() => store.getters.getConnectionStatus.address);
+  watch(address, (newVal) => {
+    console.log('address changed', newVal);
+    if (newVal) fetchSurveys();
+  });
 
   const lastSurveyUpdate = computed(() => {
     const t = store.getters.getLastSurveysUpdate.toLocaleString();

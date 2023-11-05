@@ -295,10 +295,20 @@
     let res = await grantAccessFunc(data.address, 'web3mail.apps.iexec.eth', selectedSurvey.value.ownerAddress, 0, 1);
     console.log("Risposta all'autorizzazione del pischello:", res);
     iExecStatus.value = 4; // Sto salvando i dati sul server
-    let response = await axios.post(`${process.env.VUE_APP_API_URL}/api/surveys/${selectedSurvey.value.surveyId}`, {
-      data: data.address,
-      respondentAddress: await getAccount().connector?.getAccount(),
-      review: surveyData.review,
+    const { address, chainId } = store.getters.getConnectionStatus;
+    let response = await axios.request({
+      method: 'post',
+      url: `${process.env.VUE_APP_API_URL}/api/surveys/${selectedSurvey.value.surveyId}`,
+      headers: {
+        'Content-Type': 'application/json',
+        AddressId: address,
+        ChainId: chainId,
+      },
+      data: {
+        data: data.address,
+        respondentAddress: store.getters.getConnectionStatus.address,
+        review: surveyData.review,
+      },
     });
     console.log('Risposta al salvataggio dei dati sul server:', response);
     iExecStatus.value = 5; // Ho finito
@@ -315,14 +325,6 @@
       true,
       () => router.push({ name: 'SurveysExploreView', params: { filter: 'explore' } }),
     );
-    /*
-    openAlert({ title: 'Yeah', body: 'You have completed the survey!\nNow you are going to secure your answers on iExec', button: 'Cool' }, true, async () => {
-      console.log('Risposta al salvataggio dei dati su iExec:', data);
-      // Carico il dato
-      openAlert({ title: 'Data deployed on iExec!', body: 'Your answers are encrypted and secured via iExec', button: 'Understood' }, true, async () => {
-        console.log("Risposta all'autorizzazione del pischello:", res);
-      });
-    }); */
   };
 
   const steps = computed(() => [
