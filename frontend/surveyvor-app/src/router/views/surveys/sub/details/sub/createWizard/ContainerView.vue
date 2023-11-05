@@ -462,13 +462,13 @@
   import { CheckIcon as CheckIcon20, ChevronUpDownIcon } from '@heroicons/vue/20/solid';
   import { computed } from 'vue';
   // import { prepareWriteContract, writeContract} from '@wagmi/core';
-  /*  import { writeContract } from '@wagmi/core';
+   import { writeContract } from '@wagmi/core';
 
   import { ethers } from 'ethers';
 
   // We import also the json file
   import foundry_build_contract from '../../../../../../../../../../utils/other_abis/Surveyvor.json';
- */
+ 
   const vueAlert = ref({
     open: false,
     callback: () => {},
