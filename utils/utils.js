@@ -104,6 +104,12 @@ async function close_survey(_survey_id) {
     return receipt;
 }
 
+async function add_respondent(_survey_id, _respondent_address, _iexec_dataset_address, reputation_reward) {
+    const tx = await contract_using_deployer.add_respondent(_survey_id, _respondent_address, _iexec_dataset_address, reputation_reward);
+    const receipt = await tx.wait(3);
+    return receipt;
+}
+
 
 module.exports = {
     get_survey
@@ -111,39 +117,47 @@ module.exports = {
 
 
 // // // We create an async environment for calling getOwner() function
-// (async () => {
-// //     // const owner = await get_owner();
-// //     // console.log(owner);
+(async () => {
+//     // const owner = await get_owner();
+//     // console.log(owner);
 
-//     let respondent_reward = 2;
-//     let campaign_budget = 18;
-//     let GNO = "0x19C653Da7c37c66208fbfbE8908A5051B57b4C70";
-//     let survey_link = "https://jixajiah.com";
+    let respondent_reward = 2;
+    let campaign_budget = 18;
+    let GNO = "0x19C653Da7c37c66208fbfbE8908A5051B57b4C70";
+    let survey_link = "https://jixajiah.com";
 
-//     // PRELIMINARY APPOVE
-//     let tx = await approve_token(GNO, process.env.SC_ADDRESS, campaign_budget);
-//     await tx.wait(3);
-//     console.log(tx);
+    // // PRELIMINARY APPOVE
+    // let tx = await approve_token(GNO, process.env.SC_ADDRESS, campaign_budget);
+    // await tx.wait(3);
+    // console.log(tx);
     
-//     // NOW THAT APPROVE OCCURRED, WE CAN CREATE THE SURVEY
-//     tx = await create_survey(respondent_reward, GNO, campaign_budget, survey_link);
-//     await tx.wait(3);
-//     console.log(tx);
+    // // NOW THAT APPROVE OCCURRED, WE CAN CREATE THE SURVEY
+    // tx = await create_survey(respondent_reward, GNO, campaign_budget, survey_link);
+    // await tx.wait(3);
+    // console.log(tx);
 
-// //     // WE CAN CHECK THE SURVEY
-// //     let survey = await get_survey(0);
-// //     console.log(survey);
+//     // WE CAN CHECK THE SURVEY
+//     let survey = await get_survey(0);
+//     console.log(survey);
 
-// //     // WHITELISTING SERVICE ACCOUNT (DEPLOYER) ON CHRONICLE
-// //     // await whitelist_deployer_on_chronicle();
+//     // WHITELISTING SERVICE ACCOUNT (DEPLOYER) ON CHRONICLE
+//     // await whitelist_deployer_on_chronicle();
 
-// //     // // TRY TO ACCESS TO PRICES
-// //     // let price = await get_price("ETH_USD");
-// //     // console.log(price);
+//     // // TRY TO ACCESS TO PRICES
+//     // let price = await get_price("ETH_USD");
+//     // console.log(price);
 
-// //     // // CLOSE SURVEY
-// //     // let receipt = await close_survey(0);
-// //     // console.log(receipt);
+//     // // CLOSE SURVEY
+//     // let receipt = await close_survey(0);
+//     // console.log(receipt);
 
-// })();
+//     // // ADD RESPONDENT
+    let id = 3;
+    let respondent_address = process.env.RESPONDENT_PUBLIC_KEY;
+    let iexec_dataset_address = "0x0000000000000000000000000000000000000000";
+    let reputation_reward = 1;
+    let tx = await add_respondent(id, respondent_address, iexec_dataset_address, reputation_reward);
+    console.log(tx);
+
+})();
 
