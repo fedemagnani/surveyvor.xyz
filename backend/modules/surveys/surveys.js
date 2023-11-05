@@ -4,19 +4,19 @@ const express = require('express');
 const router = express.Router();
 const { connectToMongoDB } = require('../../lib/mongodb/db');
 const { ObjectId } = require('mongodb');
-const {get_survey} = require('../../../utils/utils.js');
+const { get_survey } = require('../../../utils/utils.js');
 
-function format_survey(survey, survey_gnosis,req){
+function format_survey(survey, survey_gnosis, req) {
     console.log(`$${survey_gnosis.reward_respondent_usd}`)
     survey.currency = survey_gnosis.currency_reward;
     survey.reward = survey_gnosis.reward_respondent;
     survey.reward_usd = `$${survey_gnosis.reward_respondent_usd}`;
     survey.budget = survey_gnosis.campaign_budget;
-    survey.respondentsLeft = survey.budget/survey.reward;
+    survey.respondentsLeft = survey.budget / survey.reward;
     survey.maximumRespondentsNumber = parseInt(survey.respondentsLeft) + parseInt(survey_gnosis.respondent_count);
     // survey.survey_link = survey_gnosis.survey_link;
     survey.start_date = survey_gnosis.start_date;
-    survey.closed = survey.budget===0;
+    survey.closed = survey.budget === 0;
     survey.ownerAddress = survey_gnosis.surveyprod_address;
     survey.owned = survey_gnosis.surveyprod_address == req.user_address
     return survey;
@@ -39,7 +39,7 @@ router.get('/', async (req, res) => {
     for (let i = 0; i < surveys.length; i++) {
         let id = surveys[i].surveyId;
         let survey_gnosis = await get_survey(id, req.chain_id);
-        surveys[i]=format_survey(surveys[i], survey_gnosis,req)
+        surveys[i] = format_survey(surveys[i], survey_gnosis, req)
         // surveys[i].currency = survey_gnosis.currency_reward;
         // surveys[i].reward = survey_gnosis.reward_respondent;
         // surveys[i].budget = survey_gnosis.campaign_budget;
@@ -61,8 +61,8 @@ router.get('/:id', async (req, res) => {
     let _id = survey.surveyId;
     console.log(req.chain_id);
     let survey_gnosis = await get_survey(_id, req.chain_id);
-    survey=format_survey(survey, survey_gnosis,req)
-    
+    survey = format_survey(survey, survey_gnosis, req)
+
     // survey.currency = survey_gnosis.currency_reward;
     // survey.reward = survey_gnosis.reward_respondent;
     // survey.budget = survey_gnosis.campaign_budget;
@@ -77,6 +77,17 @@ router.get('/:id', async (req, res) => {
     if (!surveyId) return res.status(404).send('Survey not found'); */
     // AGGIUNGI GET DA GNOSIS
     res.json(survey);
+});
+
+router.post('/:id', async (req, res) => {
+    const { id: surveyId } = req.params;
+    const { data: iExecAddress, respondentAddress, review } = req.body;
+    if (!iExecAddress || !respondentAddress || !review || !surveyId) return res.status(400).send('Missing data');
+    const { db } = await connectToMongoDB();
+    const collection = db.collection('Answer');
+    const answer = await collection.insertOne({ surveyId, iExecAddress, respondentAddress, review });
+    res.json(answer);
+    // TODO: Link Gnosis
 });
 
 // Close survey

@@ -88,19 +88,19 @@
                     <label :for="review_1" class="block text-sm font-medium leading-6 text-gray-900">1 Star</label>
                   </div>
                   <div class="flex items-center gap-x-3">
-                    <input id="review_2" name="review" value="1" type="radio" class="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600" />
+                    <input id="review_2" name="review" value="2" type="radio" class="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600" />
                     <label :for="review_2" class="block text-sm font-medium leading-6 text-gray-900">2 Star</label>
                   </div>
                   <div class="flex items-center gap-x-3">
-                    <input id="review_3" name="review" value="1" type="radio" class="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600" />
+                    <input id="review_3" name="review" value="3" type="radio" class="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600" />
                     <label :for="review_3" class="block text-sm font-medium leading-6 text-gray-900">3 Star</label>
                   </div>
                   <div class="flex items-center gap-x-3">
-                    <input id="review_4" name="review" value="1" type="radio" class="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600" />
+                    <input id="review_4" name="review" value="4" type="radio" class="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600" />
                     <label :for="review_4" class="block text-sm font-medium leading-6 text-gray-900">4 Star</label>
                   </div>
                   <div class="flex items-center gap-x-3">
-                    <input id="review_5" name="review" value="1" type="radio" class="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600" />
+                    <input id="review_5" name="review" value="5" type="radio" class="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600" />
                     <label :for="review_5" class="block text-sm font-medium leading-6 text-gray-900">5 Star</label>
                   </div>
                 </div>
@@ -182,7 +182,7 @@
   import { ref } from 'vue';
   import { Dialog, DialogPanel, DialogTitle, TransitionChild, TransitionRoot } from '@headlessui/vue';
   import { CheckIcon, NoSymbolIcon } from '@heroicons/vue/24/outline';
-  
+
   import { useStore } from 'vuex';
   import { useRoute, useRouter } from 'vue-router';
   import { computed, onMounted } from 'vue';
@@ -229,6 +229,8 @@
     openAlert({ title: 'Yeah', body: 'You are eligible to this survey!', button: 'Go to the Survey!' }, true, () => (presurveyOk.value = true));
   };
 
+  import axios from 'axios';
+
   // Submit Survey
   const submitSurvey = () => {
     const survey = document.querySelector('#survey-form');
@@ -237,36 +239,33 @@
 
     // TODO: INTEGRARE iExec
     openAlert({ title: 'Yeah', body: 'You have completed the survey!\nNow you are going to secure your answers on iExec', button: 'Cool' }, true, async () => {
-      // router.push({ name: 'SurveysExploreView', params: { filter: 'explore' } }),
-      let data = await protectDataFunc({ email: 'filippocarboni99@gmail.com' }, 'email');
-        console.log('resp:', data);
-        openAlert({ title: 'Data deployed on iExec!', body: 'Your answers are encrypted and secured via iExec', button: 'Understood' }, true, async () =>{
-          let res = await grantAccessFunc(data.address, "web3mail.apps.iexec.eth",selectedSurvey.value.ownerAddress,0,1)
-          console.log('res:', res);
-          ////
-        }
-          // router.push({ name: 'SurveysExploreView', params: { filter: 'explore' } }),
-        );
+      let data = await protectDataFunc({ ...surveyData }); // TODO: verificare se è possibile usare surveyId
+      console.log('Risposta al salvataggio dei dati su iExec:', data);
+      // Carico il dato
+      openAlert({ title: 'Data deployed on iExec!', body: 'Your answers are encrypted and secured via iExec', button: 'Understood' }, true, async () => {
+        let res = await grantAccessFunc(data.address, 'web3mail.apps.iexec.eth', selectedSurvey.value.ownerAddress, 0, 1);
+
+        axios.post(`${process.env.VUE_APP_API_URL}/api/surveys/${selectedSurvey.value._id}`, {
+          data: data.address,
+          respondentAddress: await getAccount().connector?.getAccount(),
+          review: surveyData.review,
+        });
+
+        console.log("Risposta all'autorizzazione del pischello:", res);
+      });
     });
   };
 
-
   // Data Protector iExec
-  const protectDataFunc = async (data, name) => {
+  const protectDataFunc = async (data) => {
     const result = getAccount();
     const provider = await result.connector?.getProvider();
     const dataProtector = new IExecDataProtector(provider);
-    const protectedData = await dataProtector.protectData({ data, name });
+    const protectedData = await dataProtector.protectData({ data, name: `${await result.connector?.getAccount()}:${selectedSurvey.value.surveyId}` });
     return protectedData;
   };
 
-  const grantAccessFunc = async (
-    protectedData,
-    authorizedApp,
-    authorizedUser,
-    pricePerAccess,
-    numberOfAccess,
-  ) => {
+  const grantAccessFunc = async (protectedData, authorizedApp, authorizedUser, pricePerAccess, numberOfAccess) => {
     const result = getAccount();
     const provider = await result.connector?.getProvider();
     // Configure private data protector
@@ -279,7 +278,5 @@
       numberOfAccess,
     });
     return hash;
-    
   };
-  
 </script>

@@ -145,7 +145,20 @@
   import { onMounted } from 'vue';
   onMounted(fetchSurveys);
 
-  const surveys = computed(() => store.getters.getAllSurveys);
+  const surveys = computed(() => {
+    return store.getters.getAllSurveys.filter((survey) => {
+      switch (filter.value) {
+        case 'history':
+          return survey.closed;
+        case 'mySurveys':
+          return survey.owner === '';
+        case 'answer':
+          return !survey.closed;
+        default:
+          return true;
+      }
+    });
+  });
 
   // Surveys Card
   import { StarIcon } from '@heroicons/vue/20/solid';
