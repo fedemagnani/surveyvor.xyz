@@ -31,7 +31,6 @@
         {{ connectionStatus }}
       </button>
     </template>
-    <button class="p-3 bg-white text-black" @click="tryPd">Try PD</button>
     <w3m-button size="sm" balance="hide" label="Connect to the Chain" />
   </span>
 </template>

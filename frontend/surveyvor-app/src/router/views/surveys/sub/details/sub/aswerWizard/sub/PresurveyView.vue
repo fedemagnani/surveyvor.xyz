@@ -1,6 +1,6 @@
 <template>
   <span>
-    <span v-if="!presurveyOk">
+    <span v-if="iExecStatus === 0 && !presurveyOk">
       <form id="presurvey-form" preventDefault="true">
         <div class="space-y-12">
           <div class="border-b border-gray-900/10 pb-12">
@@ -40,7 +40,7 @@
         </div>
       </form>
     </span>
-    <span v-else>
+    <span v-else-if="iExecStatus === 0">
       <form id="survey-form" preventDefault="true">
         <div class="space-y-12">
           <div class="border-b border-gray-900/10 pb-12">
@@ -118,6 +118,57 @@
         </div>
       </form>
     </span>
+    <div v-else class="fixed w-screen h-screen flex justify-center items-center filter backdrop-blur-sm bg-gray-400/30 top-0 left-0">
+      <nav aria-label="Progress" class="bg-white rounded-2xl border border-gray-100 p-12 shadow-xl">
+        <ol role="list" class="overflow-visible">
+          <li v-for="(step, stepIdx) in steps" :key="step.name" :class="[stepIdx !== steps.length - 1 ? 'pb-10' : '', 'relative']">
+            <template v-if="step.status === 'complete'">
+              <div v-if="stepIdx !== steps.length - 1" class="absolute left-4 top-4 -ml-px mt-0.5 h-full w-0.5 bg-indigo-600" aria-hidden="true" />
+              <a class="group relative flex items-start">
+                <span class="flex h-9 items-center">
+                  <span class="relative z-10 flex h-8 w-8 items-center justify-center rounded-full bg-indigo-600 group-hover:bg-indigo-800">
+                    <CheckIcon class="h-5 w-5 text-white" aria-hidden="true" />
+                  </span>
+                </span>
+                <span class="ml-4 flex min-w-0 flex-col">
+                  <span class="text-sm font-medium">{{ step.name }}</span>
+                  <span class="text-sm text-gray-500">{{ step.description }}</span>
+                </span>
+              </a>
+            </template>
+            <template v-else-if="step.status === 'current'">
+              <div v-if="stepIdx !== steps.length - 1" class="absolute left-4 top-4 -ml-px mt-0.5 h-full w-0.5 bg-gray-300" aria-hidden="true" />
+              <a class="group relative flex items-start" aria-current="step">
+                <span class="flex h-9 items-center" aria-hidden="true">
+                  <span class="animate-ping relative z-10 flex h-8 w-8 items-center justify-center rounded-full border-2 border-indigo-600 bg-white">
+                    <span class="h-2.5 w-2.5 rounded-full bg-indigo-600" />
+                  </span>
+                </span>
+                <span class="ml-4 flex min-w-0 flex-col">
+                  <span class="text-sm font-medium text-indigo-600">{{ step.name }}</span>
+                  <span class="text-sm text-gray-500">{{ step.description }}</span>
+                </span>
+              </a>
+            </template>
+            <template v-else>
+              <div v-if="stepIdx !== steps.length - 1" class="absolute left-4 top-4 -ml-px mt-0.5 h-full w-0.5 bg-gray-300" aria-hidden="true" />
+              <a class="group relative flex items-start">
+                <span class="flex h-9 items-center" aria-hidden="true">
+                  <span
+                    class="relative z-10 flex h-8 w-8 items-center justify-center rounded-full border-2 border-gray-300 bg-white group-hover:border-gray-400">
+                    <span class="h-2.5 w-2.5 rounded-full bg-transparent group-hover:bg-gray-300" />
+                  </span>
+                </span>
+                <span class="ml-4 flex min-w-0 flex-col">
+                  <span class="text-sm font-medium text-gray-500">{{ step.name }}</span>
+                  <span class="text-sm text-gray-500">{{ step.description }}</span>
+                </span>
+              </a>
+            </template>
+          </li>
+        </ol>
+      </nav>
+    </div>
 
     <TransitionRoot as="template" :show="vueAlert && vueAlert.open">
       <Dialog as="div" class="relative z-10" @close="open = false">
@@ -154,7 +205,7 @@
                   <div class="mt-3 text-center sm:mt-5">
                     <DialogTitle as="h3" class="text-base font-semibold leading-6 text-gray-900">{{ vueAlert.title }}</DialogTitle>
                     <div class="mt-2">
-                      <p class="text-sm text-gray-500">{{ vueAlert.body }}</p>
+                      <p class="text-sm text-gray-500" v-html="vueAlert.body"></p>
                     </div>
                   </div>
                 </div>
@@ -231,30 +282,67 @@
 
   import axios from 'axios';
 
+  const iExecStatus = ref(0);
   // Submit Survey
-  const submitSurvey = () => {
+  const submitSurvey = async () => {
     const survey = document.querySelector('#survey-form');
     const surveyData = Object.fromEntries(new FormData(survey).entries());
     console.log(surveyData);
 
-    // TODO: INTEGRARE iExec
+    iExecStatus.value = 2; // Sto salvando i dati su iExec
+    let data = await protectDataFunc({ ...surveyData }); // TODO: verificare se è possibile usare surveyId
+    iExecStatus.value = 3; // Sto autorizzando il surveyProducer a leggere i dati
+    let res = await grantAccessFunc(data.address, 'web3mail.apps.iexec.eth', selectedSurvey.value.ownerAddress, 0, 1);
+    console.log("Risposta all'autorizzazione del pischello:", res);
+    iExecStatus.value = 4; // Sto salvando i dati sul server
+    let response = await axios.post(`${process.env.VUE_APP_API_URL}/api/surveys/${selectedSurvey.value.surveyId}`, {
+      data: data.address,
+      respondentAddress: await getAccount().connector?.getAccount(),
+      review: surveyData.review,
+    });
+    console.log('Risposta al salvataggio dei dati sul server:', response);
+    iExecStatus.value = 5; // Ho finito
+    openAlert(
+      {
+        title: 'Congratulations!',
+        body: `You have completed the survey!</br>You have received <b>${
+          selectedSurvey.value.reward + ' ' + selectedSurvey.value.currency
+        }</b><br/><a target="_blank" class="font-semibold text-indigo-500 underline" href="https://gnosis-chiado.blockscout.com/tx/${
+          response?.data?.hash
+        }">View transaction</a>`,
+        button: 'Awesome!',
+      },
+      true,
+      () => router.push({ name: 'SurveysExploreView', params: { filter: 'explore' } }),
+    );
+    /*
     openAlert({ title: 'Yeah', body: 'You have completed the survey!\nNow you are going to secure your answers on iExec', button: 'Cool' }, true, async () => {
-      let data = await protectDataFunc({ ...surveyData }); // TODO: verificare se è possibile usare surveyId
       console.log('Risposta al salvataggio dei dati su iExec:', data);
       // Carico il dato
       openAlert({ title: 'Data deployed on iExec!', body: 'Your answers are encrypted and secured via iExec', button: 'Understood' }, true, async () => {
-        let res = await grantAccessFunc(data.address, 'web3mail.apps.iexec.eth', selectedSurvey.value.ownerAddress, 0, 1);
-
-        axios.post(`${process.env.VUE_APP_API_URL}/api/surveys/${selectedSurvey.value._id}`, {
-          data: data.address,
-          respondentAddress: await getAccount().connector?.getAccount(),
-          review: surveyData.review,
-        });
-
         console.log("Risposta all'autorizzazione del pischello:", res);
       });
-    });
+    }); */
   };
+
+  const steps = computed(() => [
+    { name: 'Start', description: 'Setting task.', href: '#', status: iExecStatus.value > 1 ? 'complete' : 'current' },
+    {
+      name: 'Save data on iExec',
+      description: 'Using DataProtect to encrypt and secure your answers.',
+      status: iExecStatus.value == 2 ? 'current' : iExecStatus.value > 2 ? 'complete' : 'upcoming',
+    },
+    {
+      name: 'Whitelisting the survey producer',
+      description: 'Only the Survey Producer would access your data.',
+      status: iExecStatus.value == 3 ? 'current' : iExecStatus.value > 3 ? 'complete' : 'upcoming',
+    },
+    {
+      name: 'Sending your reward',
+      description: 'Interacting with GNOSIS contract and sending reward.',
+      status: iExecStatus.value == 4 ? 'current' : iExecStatus.value > 4 ? 'complete' : 'upcoming',
+    },
+  ]);
 
   // Data Protector iExec
   const protectDataFunc = async (data) => {
