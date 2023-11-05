@@ -384,10 +384,10 @@
         </div>
       </div>
 
-      <div class="mt-6 flex items-center justify-end gap-x-6">
+      <div class="mt-6 mb-64 flex items-center justify-end gap-x-6">
         <div
           @click="submitSurvey"
-          class="cursor-pointer rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+          class="cursor-pointer rounded-md bg-indigo-600 px-16 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
           Save
         </div>
       </div>
@@ -462,13 +462,13 @@
   import { CheckIcon as CheckIcon20, ChevronUpDownIcon } from '@heroicons/vue/20/solid';
   import { computed } from 'vue';
   // import { prepareWriteContract, writeContract} from '@wagmi/core';
-  import { writeContract} from '@wagmi/core';
+  /*  import { writeContract } from '@wagmi/core';
 
   import { ethers } from 'ethers';
 
-  // We import also the json file 
+  // We import also the json file
   import foundry_build_contract from '../../../../../../../../../../utils/other_abis/Surveyvor.json';
-  
+ */
   const vueAlert = ref({
     open: false,
     callback: () => {},
@@ -480,7 +480,7 @@
   const openAlert = ({ title, body, button }, ok, callback) => {
     vueAlert.value = { open: true, ok, callback, title, body, button };
   };
-const currencies = [
+  const currencies = [
     { name: 'ETH', id: '0xc8A1F9461115EF3C1E84Da6515A88Ea49CA97660', avatar: 'https://s2.coinmarketcap.com/static/img/coins/64x64/1027.png' },
     { name: 'USDT', id: '0x0bd446021Ab95a2ABd638813f9bDE4fED3a5779a', avatar: 'https://s2.coinmarketcap.com/static/img/coins/64x64/825.png' },
     { name: 'GNO', id: '0x19C653Da7c37c66208fbfbE8908A5051B57b4C70', avatar: 'https://s2.coinmarketcap.com/static/img/coins/64x64/1659.png' },
@@ -512,8 +512,8 @@ const currencies = [
 
   const title = ref('Titolo del sondaggio');
   const description = ref('Descrizione del sondaggio');
-  const budget = ref(3);
-  const reward = ref(0.000003);
+  const budget = ref(0.00001);
+  const reward = ref(0.0000003);
   const seats = computed(() => {
     if (!reward.value) return 'Infinity';
     if (!budget.value) return 0;
@@ -618,6 +618,10 @@ const currencies = [
     currentSurvey.questions.push(toAdd);
   };
 
+  import { useStore } from 'vuex';
+  const store = useStore();
+
+  import axios from 'axios';
   async function submitSurvey() {
     const survey = {
       title: title.value,
@@ -629,19 +633,40 @@ const currencies = [
       surveys: surveys.value,
       presurvey: surveys.value[0].questions,
       survey: surveys.value[1].questions,
+      owner: store.getters.getConnectionStatus.address,
     };
+
     console.log(survey);
+  
     const { hash } = await writeContract({
-      address: "0x6BB72b7038Aaa132850b005F4008d724df98f4f9",
+      address: '0x6BB72b7038Aaa132850b005F4008d724df98f4f9',
       abi: foundry_build_contract.abi,
       functionName: 'create_survey',
       args: [
         ethers.BigNumber.from(survey.reward * 1e18).toString(),
         survey.currency.toString(),
-        ethers.BigNumber.from(survey.budget* 1e18).toString(),
-        "default"
-      ]
-    })
-    console.log(hash)
+        ethers.BigNumber.from(survey.budget * 1e18).toString(),
+        'default',
+      ],
+    });
+    console.log(hash);
+
+    axios
+      .request({
+        method: 'post',
+        url: process.env.VUE_APP_API_URL + '/api/surveys',
+        data: { ...survey, surveyId: 7 },
+        headers: {
+          'Content-Type': 'application/json',
+          AddressId: store.getters.getConnectionStatus.address,
+          ChainId: store.getters.getConnectionStatus.chainId,
+        },
+      })
+      .then(() => {
+        console.log('survey saved');
+      })
+      .catch((e) => {
+        console.log(e);
+      });
   }
 </script>

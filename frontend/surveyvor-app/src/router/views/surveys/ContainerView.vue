@@ -29,7 +29,7 @@
       </div>
     </Disclosure>
 
-    <header class="bg-white shadow-sm">
+    <header class="hidden bg-white shadow-sm">
       <div class="mx-auto max-w-7xl px-4 py-4 sm:px-6 lg:px-8">
         <div class="md:flex md:items-center md:justify-between md:space-x-5">
           <div class="flex items-start space-x-5">
@@ -49,16 +49,16 @@
               class="inline-flex items-center justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
               Refresh
             </button>
-            <router-link
-              :to="{ name: 'ProducerCreateSurveyWizard' }"
-              type="button"
-              class="inline-flex items-center justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
-              Create new Survey
-            </router-link>
           </div>
         </div>
       </div>
     </header>
+    <router-link
+      :to="{ name: 'ProducerCreateSurveyWizard' }"
+      type="button"
+      class="fixed transform transition duration-300 ease-in-out right-16 bottom-8 items-center justify-center rounded-md bg-indigo-600 px-5 py-3 text-sm font-semibold text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 hover:scale-110 shadow-lg hover:shadow-2xl">
+      Create new Survey
+    </router-link>
     <main>
       <div class="mx-auto max-w-7xl py-6 sm:px-6 lg:px-8">
         <router-view></router-view>
