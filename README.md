@@ -8,7 +8,7 @@ The uniqueness of this protocol is accomplished thanks to the following integrat
 In order to run the project locally, you need to launch both the frontend and the backend.
 ```
 git clone https://github.com/fedemagnani/surveyvor.xyz
-npm i ethers@5.7.2
+npm i ethers@6.8.1
 ```
 ### Backend
 Once that you clone the repository, you need to navigate to the frontend folder and install the dependencies, and then run the backend:
@@ -26,4 +26,10 @@ npm install
 npm run serve
 ```
 
+In case of problems when answering to surveys, try the following
+```
+npm i @iexec/dataprotector
+npm i iexec@8.4.0
+npm i ethers@5.7.2
+```
 
