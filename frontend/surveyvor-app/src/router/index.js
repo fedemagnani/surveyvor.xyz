@@ -45,10 +45,6 @@ const routes = [
                                 alias: '',
                                 component: () => import('./views/surveys/sub/details/sub/aswerWizard/sub/PresurveyView.vue'),
                             },
-                            {
-                                path: 'result',
-                                component: () => import('./views/surveys/sub/details/sub/aswerWizard/sub/ResultView.vue'),
-                            },
                         ]
                     },
                 ]
