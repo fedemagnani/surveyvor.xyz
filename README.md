@@ -6,6 +6,10 @@ The uniqueness of this protocol is accomplished thanks to the following integrat
 - WalletConnect: to allow users to interact with the platform using their own wallets via Web3Wallet 
 # Setup
 In order to run the project locally, you need to launch both the frontend and the backend.
+```
+git clone https://github.com/fedemagnani/surveyvor.xyz
+npm i ethers@5.7.2
+```
 ### Backend
 Once that you clone the repository, you need to navigate to the frontend folder and install the dependencies, and then run the backend:
 ```
