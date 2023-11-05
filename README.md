@@ -33,3 +33,7 @@ npm i iexec@8.4.0
 npm i ethers@5.7.2
 ```
 
+# Usage
+Whenever you're answering to a survey, make sure that you're connected to iExec network.
+
+On the contrary, when you're creating a survey, make sure that you're connected to Gnosis network. 
