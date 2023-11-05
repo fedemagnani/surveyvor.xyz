@@ -7,7 +7,7 @@
             <div
               v-for="survey in surveys"
               :key="survey.id"
-              class="group relative p-6 pt-12 my-12 sm:p-6 flex flex-col justify-center items-center rounded-2xl transform transition duration-300 ease-in-out overflow-visible"
+              class="group relative p-6 pt-12 my-12 mb-6 sm:p-6 flex flex-col justify-center items-center rounded-2xl transform transition duration-300 ease-in-out overflow-visible"
               :class="{ 'hover:bg-gray-100 hover:scale-110': !survey.closed }">
               <div
                 class="relative h-48 w-48 bg-gray-300 p-16 rounded-3xl shadow-xl transform transition duration-300 ease-in-out"
@@ -56,7 +56,7 @@
               v-for="survey in ['opacity-70', 'opacity-60', 'opacity-50', 'opacity-40', 'opacity-30', 'opacity-20', 'opacity-10', 'opacity-5']"
               :key="survey.id"
               :class="[survey]"
-              class="group relative p-6 pt-12 my-12 sm:p-6 flex flex-col justify-center items-center rounded-2xl transform transition duration-300 ease-in-out overflow-visible">
+              class="group relative p-6 pt-12 my-12 mb-6 sm:p-6 flex flex-col justify-center items-center rounded-2xl transform transition duration-300 ease-in-out overflow-visible">
               <div class="animate pulse opacity/60 relative h-48 w-48 bg-gray-300 p-16 rounded-3xl shadow-xl transform transition duration-300 ease-in-out">
                 <div class="absolute top-0 left-0 z-10 rounded-3xl h-full w-full bg-gradient-to-t from-gray-900/60 to-transparent"></div>
               </div>

@@ -30,8 +30,8 @@ async function get_survey(_id, chain_id) {
     const survey = await contract_using_deployer.get_survey(_id);
     let currency_reward = survey[1]; //raw address
     currency_reward = ADDRESS_MAPPINGS[chain_id][currency_reward]; //mapping
-    let decimals = currency_reward.decimals;
-    currency_reward = currency_reward.tracker; //symbol
+    let decimals = 18;
+    currency_reward = 'GNO'; //symbol
     let price_in_usd = await get_price(currency_reward + "_USD");
     return {
         reward_respondent: survey[0].toString() / (10 ** decimals),

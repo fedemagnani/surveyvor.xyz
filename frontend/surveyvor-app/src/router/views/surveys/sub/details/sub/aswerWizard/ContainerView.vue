@@ -58,12 +58,11 @@
               / {{ selectedSurvey.maximumRespondentsNumber }}
             </p>
           </div>
-
-          <div class="py-12">
-            <router-view />
-          </div>
         </div>
       </div>
+    </div>
+    <div class="py-12">
+      <router-view />
     </div>
   </div>
 </template>

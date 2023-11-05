@@ -50,7 +50,7 @@ export const actions = {
     async fetchSurvey({ state, commit }, surveyId) {
         const { address, chainId } = state.connectionState;
         if (!address || !chainId) return;
-        commit('setSelectedSurvey', null);
+        // commit('setSelectedSurvey', null);
         axios.request({
             url: process.env.VUE_APP_API_URL + '/api/surveys/' + surveyId,
             method: 'get',

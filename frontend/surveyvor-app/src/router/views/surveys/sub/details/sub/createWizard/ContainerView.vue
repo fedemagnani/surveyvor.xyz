@@ -33,6 +33,36 @@
               </div>
             </div>
 
+            <div class="sm:col-span-4">
+              <label class="block text-sm font-medium leading-6 text-gray-900">Background color (HEX)</label>
+              <div class="mt-2">
+                <div
+                  class="flex pl-1 rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
+                  <input
+                    type="text"
+                    v-model="background"
+                    class="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
+                    placeholder="#ffffff" />
+                </div>
+              </div>
+            </div>
+
+            <div class="sm:col-span-4">
+              <label class="block text-sm font-medium leading-6 text-gray-900">Minimum responder level</label>
+              <div class="mt-2">
+                <div
+                  class="flex pl-1 rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
+                  <input
+                    type="number"
+                    min="1"
+                    max="5"
+                    v-model="minRankingTier"
+                    class="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
+                    placeholder="1-5" />
+                </div>
+              </div>
+            </div>
+
             <div class="col-span-full">
               <label class="block text-sm font-medium leading-6 text-gray-900">Description</label>
               <div class="mt-2">
@@ -462,13 +492,13 @@
   import { CheckIcon as CheckIcon20, ChevronUpDownIcon } from '@heroicons/vue/20/solid';
   import { computed } from 'vue';
   // import { prepareWriteContract, writeContract} from '@wagmi/core';
-   import { writeContract } from '@wagmi/core';
+  import { writeContract } from '@wagmi/core';
 
   import { ethers } from 'ethers';
 
   // We import also the json file
   import foundry_build_contract from '../../../../../../../../../../utils/other_abis/Surveyvor.json';
- 
+
   const vueAlert = ref({
     open: false,
     callback: () => {},
@@ -621,6 +651,9 @@
   import { useStore } from 'vuex';
   const store = useStore();
 
+  const background = ref('');
+  const minRankingTier = ref('3');
+
   import axios from 'axios';
   async function submitSurvey() {
     const survey = {
@@ -634,10 +667,12 @@
       presurvey: surveys.value[0].questions,
       survey: surveys.value[1].questions,
       owner: store.getters.getConnectionStatus.address,
+      background: background.value,
+      minRankingTier: minRankingTier.value,
     };
 
     console.log(survey);
-  
+
     const { hash } = await writeContract({
       address: '0x6BB72b7038Aaa132850b005F4008d724df98f4f9',
       abi: foundry_build_contract.abi,
