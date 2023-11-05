@@ -18,12 +18,12 @@
                 <div class="mt-6 space-y-6">
                   <div v-for="(option, j) in question.options" :key="j" class="flex items-center gap-x-3">
                     <input
-                      :id="question.name + '_' + j"
-                      :name="question.name"
+                      :id="question.key + '_' + j"
+                      :name="question.key"
                       :value="option"
                       type="radio"
                       class="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600" />
-                    <label :for="question.name + '_' + j" class="block text-sm font-medium leading-6 text-gray-900">{{ option }}</label>
+                    <label :for="question.key + '_' + j" class="block text-sm font-medium leading-6 text-gray-900">{{ option }}</label>
                   </div>
                 </div>
               </fieldset>
@@ -67,12 +67,12 @@
                 <div class="mt-6 space-y-6">
                   <div v-for="(option, j) in question.options" :key="j" class="flex items-center gap-x-3">
                     <input
-                      :id="question.name + '_' + j"
-                      :name="question.name"
+                      :id="question.key + '_' + j"
+                      :name="question.key"
                       :value="option"
                       type="radio"
                       class="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600" />
-                    <label :for="question.name + '_' + j" class="block text-sm font-medium leading-6 text-gray-900">{{ option }}</label>
+                    <label :for="question.key + '_' + j" class="block text-sm font-medium leading-6 text-gray-900">{{ option }}</label>
                   </div>
                 </div>
               </fieldset>
@@ -159,15 +159,14 @@
                   </div>
                 </div>
                 <div class="mt-5 sm:mt-6">
-                  <button
-                    type="button"
-                    class="inline-flex w-full justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                  <div
+                    class="cursor-pointer select-none inline-flex w-full justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                     @click="
                       vueAlert.open = false;
                       vueAlert.callback();
                     ">
                     {{ vueAlert.button }}
-                  </button>
+                  </div>
                 </div>
               </DialogPanel>
             </TransitionChild>
