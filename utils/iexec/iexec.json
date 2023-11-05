@@ -1,0 +1,18 @@
+{
+  "description": "My iExec resource description, must be at least 150 chars long in order to pass the validation checks. Describe your application, dataset or workerpool to your users",
+  "license": "MIT",
+  "author": "?",
+  "social": {
+    "website": "?",
+    "github": "?"
+  },
+  "logo": "logo.png",
+  "buyConf": {},
+  "app": {
+    "owner": "0x2a10F05808b46b236E7B39cFB06F7527B739C1Dd",
+    "name": "iexec_drunnino",
+    "type": "DOCKER",
+    "multiaddr": "docker.io/drunnn/hello-world:1.0.0",
+    "checksum": "0xb81e40bdc85d44891e73783419ff14499ae58a317b86b4e264200115985d472e"
+  }
+}
