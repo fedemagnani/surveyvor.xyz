@@ -36,4 +36,4 @@ npm i ethers@5.7.2
 # Usage
 Whenever you're answering to a survey, make sure that you're connected to iExec network.
 
-On the contrary, when you're creating a survey, make sure that you're connected to Gnosis network. 
+On the contrary, when you're creating a survey, make sure that you're connected to Gnosis network and to have sufficient amount of GNO in your wallet 
