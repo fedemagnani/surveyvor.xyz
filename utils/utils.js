@@ -2,7 +2,7 @@ const ethers = require('ethers');
 const dotenv = require('dotenv');
 
 const gnosis_abi = require('./other_abis/Surveyvor.json');
-const ierc20_abi = require('../other_abis/IERC20.json');
+const ierc20_abi = require('./other_abis/IERC20.json');
 const self_kiss_abi = require('./other_abis/selfkiss.json');
 const chronicle_oracle_abi = require('./other_abis/chronicle_oracle.json');
 const { CHRONICLE_SMART_CONTRACTS, ADDRESS_MAPPINGS } = require('./constants.js');
