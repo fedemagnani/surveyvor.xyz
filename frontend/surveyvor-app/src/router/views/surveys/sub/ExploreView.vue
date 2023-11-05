@@ -51,16 +51,17 @@
             </div>
           </div>
 
-          <div v-else class="animate-pulse opacity-30 -mx-px grid grid-cols-2 sm:mx-0 md:grid-cols-3 lg:grid-cols-4">
+          <div v-else class="animate-pulse -mx-px grid grid-cols-2 sm:mx-0 md:grid-cols-3 lg:grid-cols-4">
             <div
-              v-for="survey in ['', '', '', '', '', '', '', '']"
+              v-for="survey in ['opacity-70', 'opacity-60', 'opacity-50', 'opacity-40', 'opacity-30', 'opacity-20', 'opacity-10', 'opacity-5']"
               :key="survey.id"
+              :class="[survey]"
               class="group relative p-6 pt-12 my-12 sm:p-6 flex flex-col justify-center items-center rounded-2xl transform transition duration-300 ease-in-out overflow-visible">
               <div class="animate pulse opacity/60 relative h-48 w-48 bg-gray-300 p-16 rounded-3xl shadow-xl transform transition duration-300 ease-in-out">
                 <div class="absolute top-0 left-0 z-10 rounded-3xl h-full w-full bg-gradient-to-t from-gray-900/60 to-transparent"></div>
               </div>
 
-              <div class="pb-2 py-5 text-center" :class="{ 'opacity-30': survey.closed }">
+              <div class="pb-2 py-5 text-center">
                 <h3 class="text-sm font-medium text-gray-900">
                   <span>
                     <span aria-hidden="true" class="absolute inset-0" />
