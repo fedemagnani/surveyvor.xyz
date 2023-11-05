@@ -1,55 +1,35 @@
-# TODO
-- {OK} Integrate Web3Wallet (frontend) (walletconnect) 
-- Web3.js integration with gnosis sc (both frontend/backend)
-    - [Frontend]: send survey on IExec and wait for confirmations on-chain ->  [Frontend]: send request to backend -> [Backend] invokes `add_respondent()` (gnosis sc) and wait for confirmation on-chain -> [Backend] answers to frontend -> [Frontend] says "thank you for your submission, you've been rewarded with"
-    - When surveyprod invokes `close_survey()`, must have a list of exportable data
-    - Whitelist service account on chronicle (to fetch token prices)
-- Web3.js integration with iExec (frontend)
-- Add mail as mandatory field in the survey
-- Survey creation
-- Web3Mail integration (when data is exported)
+# Surveyvor
+Surveyvor is a Web3 based survey platform that allows users to create and participate in surveys, preserving their privacy and monetizing their data in an secure and anonymous fashion.
+The uniqueness of this protocol is accomplished thanks to the following integrations:
+- iExec: allowing the respondents to submit their answers to surveys in private vaults (DataProtector) making them accessible only to the survey creator via predetermined and exclusive methods suchs as Web3Mail 
+- Gnosis: a blazing fast and secure decentralized network handling the treasury system of the platform, allowing survey creators to manage their survey campaigns and respondents to redeem economic rewards and on-chain reputation 
+- WalletConnect: to allow users to interact with the platform using their own wallets via Web3Wallet 
+# Setup
+In order to run the project locally, you need to launch both the frontend and the backend.
+```
+git clone https://github.com/fedemagnani/surveyvor.xyz
+npm i ethers@6.8.1
+```
+### Backend
+Once that you clone the repository, you need to navigate to the frontend folder and install the dependencies, and then run the backend:
+```
+cd backend
+npm install
+nodemon server.js
+```
 
+### Frontend
+Once that you clone the repository, you need to navigate to the frontend folder and install the dependencies, and then run the frontend:
+```
+cd frontend/surveyvor-app
+npm install
+npm run serve
+```
 
-# Core components
-
-- WalletConnect !!! (>FILO)
-    - web3wallet -> wallet integration
-    - Web3Inbox (TBD: receive notifications for events)
-
-- Figma !!! (>FILO)
-    - Mockup 
-
-- Gnosis Smart Contract !!! (>FEDE)
-    - main backend components
-
-- iExec !!! (>FEDE) 
-    - upload sensitive content
-    - whitelist addresses
-    - access to personal content
-    - web3mail -> send confirmation email once that you complete the survey
-
-
-- Safe !!! (>FEDE)
-    - generate escrow accounts
-
-- Near (TBD: survey components/website components) ! 
-
-- Chronicle !!
-    - fetch token prices
-
-- Neon, CoreDAO (TBD: multichain deployment)
-
-- 
-
-# Main Smart Contracts
-- Before funding the survey, surveyprod must grant allowance to the gnosis contract at least for the _survey_gas amount
-- By submitting the answer to the survey, surveyprod grant allowance to the respondent for the _amount_prize amount 
-
-# Survey
-- Every survey must ask for the mail of the guy (maybe we can ask the guy to submit its mail once that it connects)
-- Mail could be a hedge against sybil attacks
-
-
-
-
+In case of problems when answering to surveys, try the following
+```
+npm i @iexec/dataprotector
+npm i iexec@8.4.0
+npm i ethers@5.7.2
+```
 
