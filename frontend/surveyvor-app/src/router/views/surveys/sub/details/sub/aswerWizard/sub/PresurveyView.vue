@@ -270,15 +270,17 @@
     const preSurvey = document.querySelector('#presurvey-form');
     const preSurveyData = Object.fromEntries(new FormData(preSurvey).entries());
     console.log(preSurveyData);
-    for (const index in selectedSurvey.value.presurvey) {
-      const { name, response } = selectedSurvey.value.presurvey[index];
-      if (preSurveyData[name] !== response) {
-        openAlert({ title: 'Ooops', body: 'You are not eligible to this survey!', button: 'Back to the home' }, false, () =>
-          router.push({ name: 'SurveysExploreView', params: { filter: 'explore' } }),
+    /*for (const index in selectedSurvey.value.presurvey) {
+      const { key, response } = selectedSurvey.value.presurvey[index];
+       if (preSurveyData[key] !== response) {
+        openAlert(
+          { title: 'Ooops', body: `You are not eligible to this survey because ${preSurveyData[name]} is not ${response}!`, button: 'Back to the home' },
+          false,
+          () => router.push({ name: 'SurveysExploreView', params: { filter: 'explore' } }),
         );
-        return;
+        return; 
       }
-    }
+    }*/
     openAlert({ title: 'Yeah', body: 'You are eligible to this survey!', button: 'Go to the Survey!' }, true, () => (presurveyOk.value = true));
   };
 

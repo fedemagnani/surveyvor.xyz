@@ -77,7 +77,10 @@ router.post('/:id/close', async (req, res) => {
 
 // Create survey
 router.post('/', async (req, res) => {
-    const survey = await req.collection.insertOne(req.body);
+    const s = await req.collection.findOne({}, { sort: { surveyId: -1 } });
+    let nextSurveyId = 0;
+    if (s !== null) nextSurveyId = s.surveyId + 1;
+    const survey = await req.collection.insertOne({ ...req.body, surveyId: nextSurveyId });
     res.json(survey);
 });
 

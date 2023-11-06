@@ -1,6 +1,6 @@
 <template>
   <span>
-    <form>
+    <form preventDefault="true">
       <div class="space-y-12">
         <section>
           <!-- DIVIDER 1 -->
@@ -153,12 +153,12 @@
               <h3 class="text-gray-900 text-lg font-bold mt-12">Preview of your presurvey</h3>
               <template v-if="currentSurvey.questions && currentSurvey.questions.length">
                 <form id="survey-form" preventDefault="true">
-                  <div class="mt- 2justify-center rounded-lg border-none py-12 border-indigo-900/25 pr-8 flex flex-col space-y-3">
-                    <div v-for="(q, i) in currentSurvey.questions" :key="i" class="my-6">
+                  <div class="mt- 2justify-center rounded-lg border-none py-12 border-indigo-900/25 pr-8 flex flex-col">
+                    <div v-for="(q, i) in currentSurvey.questions" :key="i" class="mb-10">
                       <label class="text-base font-semibold text-gray-900">{{ q.question }}</label>
                       <p class="text-sm text-gray-500">{{ q.description }}</p>
                       <fieldset class="mt-4">
-                        <div class="space-y-4 sm:flex sm:items-center sm:space-x-10 sm:space-y-0">
+                        <div class="space-y-4 sm:flex sm:items-center sm:space-x-6 sm:space-y-0">
                           <div v-for="(opt, j) in q.options" :key="j" class="flex items-center">
                             <input
                               name="notification-method"
@@ -520,7 +520,7 @@
     { name: 'MATIC', id: '0xa48c56e48A71966676d0D113EAEbe6BE61661F18', avatar: 'https://s2.coinmarketcap.com/static/img/coins/64x64/3890.png' },
     { name: 'WBTC', id: '0xA7226d85CE5F0DE97DCcBDBfD38634D6391d0584', avatar: 'https://s2.coinmarketcap.com/static/img/coins/64x64/3717.png' },
     { name: 'LINK', id: '0xecB89B57A60ac44E06ab1B767947c19b236760c3', avatar: 'https://s2.coinmarketcap.com/static/img/coins/64x64/1975.png' },
-    { name: 'DAI', id: '0xa7aA6a860D17A89810dE6e6278c58EB21Fa00fc4', avatar: 'https://s2.coinmarketcap.com/static/img/coins/64x64/4943.png' } /* 
+    { name: 'DAI', id: '0xa7aA6a860D17A89810dE6e6278c58EB21Fa00fc4', avatar: 'https://s2.coinmarketcap.com/static/img/coins/64x64/4943.png' } /*
     { name: 'BTC', id: '0x4B5aBFC0Fe78233b97C80b8410681765ED9fC29c', avatar: 'https://s2.coinmarketcap.com/static/img/coins/64x64/1.png' },
     { name: 'ETH_BTC', id: '0x1804969b296E89C1ddB1712fA99816446956637e', avatar: 'https://s2.coinmarketcap.com/static/img/coins/64x64/1027.png' },
     { name: 'SELF_KISSER', id: '0x0Dcc19657007713483A5cA76e6A7bbe5f56EA37d', avatar: 'https://s2.coinmarketcap.com/static/img/coins/64x64/1027.png' },
@@ -540,8 +540,8 @@
     { name: 'YFI', id: '0x0893EcE705639112C1871DcE88D87D81540D0199', avatar: 'https://s2.coinmarketcap.com/static/img/coins/64x64/1027.png' }, */,
   ];
 
-  const title = ref('Titolo del sondaggio');
-  const description = ref('Descrizione del sondaggio');
+  const title = ref('iExec for ETH Lisbon');
+  const description = ref('This is a cool survey for ETH Lisbon');
   const budget = ref(0.00001);
   const reward = ref(0.0000003);
   const seats = computed(() => {
@@ -550,7 +550,7 @@
     return Math.floor(budget.value / reward.value);
   });
   const purposes = ['Education', 'Research', 'Marketing', 'Commercial', 'No profit', 'Open Source'];
-  const purpose = ref(purposes[2]);
+  const purpose = ref(purposes[0]);
 
   const currency = ref(currencies[2]);
 
@@ -570,18 +570,25 @@
       },
       questions: [
         {
-          question: 'What is your favorite color?',
+          question: 'How long is your experience with our products?',
           description: 'This will help us to know you better',
-          key: 'favorite-color',
-          options: ['Red', 'Blue', 'Green', 'Yellow'],
-          response: 'Red',
+          key: 'experience',
+          options: ['Less then a year', '1+ years', '5+ years'],
+          response: 'Less then a year',
         },
         {
-          question: 'What is your favorite animal?',
+          question: 'How old are you?',
           description: 'This will help us to know you better',
-          key: 'favorite-animal',
-          options: ['Dog', 'Cat', 'Bird', 'Fish'],
-          response: 'Dog',
+          key: 'age',
+          options: ['Less then 18', '18-25', '25-35', '35-50', '50+'],
+          response: '50+',
+        },
+        {
+          question: 'Where did you hear about us?',
+          description: 'This will help us to know you better',
+          key: 'engagement',
+          options: ['Social', 'Newspaper', 'Friends', 'Other'],
+          response: 'Newspaper',
         },
       ],
     },
@@ -604,21 +611,18 @@
           description: 'This will help us to know you better',
           key: 'favorite-color',
           options: ['Red', 'Blue', 'Green', 'Yellow'],
-          response: 'Red',
         },
         {
           question: 'What is your favorite animal?',
           description: 'This will help us to know you better',
           key: 'favorite-animal',
           options: ['Dog', 'Cat', 'Bird', 'Fish'],
-          response: 'Dog',
         },
         {
           question: 'What is your favorite food?',
           description: 'This will help us to know you better',
           key: 'favorite-food',
           options: ['Pizza', 'Pasta', 'Sushi', 'Burger'],
-          response: 'Pizza',
         },
       ],
     },
@@ -656,6 +660,7 @@
 
   import axios from 'axios';
   async function submitSurvey() {
+    const { address, chainId } = store.getters.getConnectionStatus;
     const survey = {
       title: title.value,
       description: description.value,
@@ -666,12 +671,13 @@
       surveys: surveys.value,
       presurvey: surveys.value[0].questions,
       survey: surveys.value[1].questions,
-      owner: store.getters.getConnectionStatus.address,
-      background: background.value,
+      owner: address,
+      image: 'http://localhost:3000/cdn/logos/iExec.png',
+      background: background.value || '#fdd154',
       minRankingTier: minRankingTier.value,
     };
 
-    console.log(survey);
+    console.log('Submit:', survey);
 
     const { hash } = await writeContract({
       address: '0x6BB72b7038Aaa132850b005F4008d724df98f4f9',
@@ -684,17 +690,18 @@
         'default',
       ],
     });
-    console.log(hash);
 
-    axios
+    console.log('Save on chain:', hash);
+
+    const res = axios
       .request({
         method: 'post',
         url: process.env.VUE_APP_API_URL + '/api/surveys',
-        data: { ...survey, surveyId: 7 },
+        data: { ...survey },
         headers: {
           'Content-Type': 'application/json',
-          AddressId: store.getters.getConnectionStatus.address,
-          ChainId: store.getters.getConnectionStatus.chainId,
+          AddressId: address,
+          ChainId: chainId,
         },
       })
       .then(() => {
@@ -703,5 +710,7 @@
       .catch((e) => {
         console.log(e);
       });
+
+    console.log('Salvato:', res);
   }
 </script>

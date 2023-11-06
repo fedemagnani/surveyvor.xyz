@@ -124,7 +124,7 @@
               <div class="space-y-6 text-base text-gray-700" v-html="selectedSurvey.description" />
             </div>
 
-            <form class="mt-6">
+            <form  preventDefault="true" class="mt-6">
               <!-- Ranking Tiers -->
               <div class="border-gray-200 border-t border-b-0">
                 <h3 class="mt-6 font-semibold text-base text-gray-600">
